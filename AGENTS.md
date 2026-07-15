@@ -19,10 +19,10 @@
 | Godot 4.5.1 **mono** | 可执行文件存在 | 官网下 4.5.1 mono 版 |
 | Godot iOS 导出模板 | `~/Library/Application Support/Godot/export_templates/4.5.1.stable.mono` | Godot 里 import `templates.tpz` |
 | 正版游戏 | `.../Slay the Spire 2/SlayTheSpire2.app/.../data_sts2_macos_arm64/sts2.dll` 存在 | 让用户在 Steam 安装 |
-| Spine iOS 库 | `libspine_godot.ios.template_release.framework` | 用户按 Spine 授权自行获取 |
-| FMOD iOS 库 | `libGodotFmod.ios.template_release.xcframework` + `libfmod{,studio}_iphoneos.a` | 用户去 FMOD 官网按其授权下载 |
+| Spine iOS 库 | `libspine_godot.ios.template_release.framework` | 官方地址+确切版本见 [`docs/THIRD_PARTY_LIBS.md`](docs/THIRD_PARTY_LIBS.md) |
+| FMOD iOS 库 | `libGodotFmod.ios.template_release.xcframework` + `libfmod{,studio}_iphoneos.a` | 同上 |
 
-> ⚠️ 第三方库（Spine/FMOD）有各自的商业授权，本仓库**不转发**。让用户自行下载后，把目录填进 `config.sh`。
+> ⚠️ 第三方库（Spine/FMOD）有各自的授权，本仓库**不转发二进制**。[`docs/THIRD_PARTY_LIBS.md`](docs/THIRD_PARTY_LIBS.md) 列了三样库的**官方下载地址、确切版本（FMOD 2.03 / Spine 4.2）、产物文件名和入口符号**——照着取，别自己猜版本。下好后把目录填进 `config.sh`。
 
 ## 第 0 步 · 填配置
 

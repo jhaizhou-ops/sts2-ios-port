@@ -47,7 +47,7 @@ share/                 移植技术记录（PDF / HTML）
 - 一台 Mac + Xcode（免费 Apple ID 可用，7 天签名周期）
 - .NET 9 SDK、Godot 4.5.1 (mono)
 - **你自己的**正版 Slay the Spire 2 游戏文件（Steam）
-- FMOD iOS SDK、Spine 运行时 iOS 库——各自去官网按其授权下载（本仓库不转发）
+- FMOD iOS SDK、Spine 运行时 iOS 库——官方地址与确切版本（FMOD 2.03 / Spine 4.2）见 [`docs/THIRD_PARTY_LIBS.md`](docs/THIRD_PARTY_LIBS.md)（本仓库不转发二进制）
 
 构建流程见 [`ios-export/README.md`](ios-export/README.md)。
 

@@ -27,9 +27,9 @@ STS2_GAME_APP="$HOME/Library/Application Support/Steam/steamapps/common/Slay the
 # Godot 4.5.1 mono 版可执行文件路径。
 STS2_GODOT_BIN="$HOME/Godot_mono.app/Contents/MacOS/Godot"
 
-# ── 第三方 iOS 库（各自去官网按其授权下载，本仓库不转发）──
-# 目录里需含: libspine_godot.ios.template_release.framework
-#            libGodotFmod.ios.template_release.xcframework
+# ── 第三方 iOS 库（官方地址+确切版本见 docs/THIRD_PARTY_LIBS.md；本仓库不转发）──
+# 目录里需含: libspine_godot.ios.template_release.framework   (Spine 4.2 / Godot 4.5.1)
+#            libGodotFmod.ios.template_release.xcframework    (FMOD 2.03 / Godot 4.5.1)
 STS2_IOS_LIBS_DIR="$HOME/sts2-ios-userlibs/ios-libs"
 # FMOD iOS 静态库目录，需含: libfmod_iphoneos.a  libfmodstudio_iphoneos.a
 STS2_FMOD_STATIC_DIR="$HOME/sts2-ios-userlibs/fmod-ios/lib"
