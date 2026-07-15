@@ -15,8 +15,9 @@ source "$SCRIPT_DIR/config.sh"
 
 DEV="$STS2_DEVICE_UDID"
 IDENT="$STS2_SIGN_IDENTITY"
-# 已构建的 .app（DerivedData 里的哈希目录不固定，自动定位）
-APP=$(find "$HOME/Library/Developer/Xcode/DerivedData" -maxdepth 4 -type d -path "*Release-iphoneos/StS2.app" 2>/dev/null | head -1)
+# 已构建的 .app（DerivedData 里的哈希目录不固定；Xcode Run 默认 Debug，也可能 Release，两者都收，取最新）
+APP=$(find "$HOME/Library/Developer/Xcode/DerivedData" -maxdepth 4 -type d -path "*-iphoneos/StS2.app" 2>/dev/null \
+      | xargs -I{} stat -f '%m %N' {} 2>/dev/null | sort -rn | head -1 | cut -d' ' -f2-)
 PUB="$SCRIPT_DIR/.godot/mono/temp/bin/ExportRelease/ios-arm64/publish/sts2.dylib"
 STG="$(mktemp -d /tmp/sts2slim.XXXXXX)/StS2.app"
 ENT="$SCRIPT_DIR/.work/ent_mem.plist"

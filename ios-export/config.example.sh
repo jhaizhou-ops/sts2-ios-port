@@ -26,6 +26,8 @@ STS2_DEVICE_UDID=""
 STS2_GAME_APP="$HOME/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/Resources"
 # Godot 4.5.1 mono 版可执行文件路径。
 STS2_GODOT_BIN="$HOME/Godot_mono.app/Contents/MacOS/Godot"
+# .NET 9 SDK 安装目录（默认 ~/.dotnet；若用 Homebrew 等装在别处，改成实际路径，如 /usr/local/share/dotnet）。
+STS2_DOTNET_ROOT="$HOME/.dotnet"
 
 # ── 第三方 iOS 库（官方地址+确切版本见 docs/THIRD_PARTY_LIBS.md；本仓库不转发）──
 # 目录里需含: libspine_godot.ios.template_release.framework   (Spine 4.2 / Godot 4.5.1)
