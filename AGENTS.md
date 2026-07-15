@@ -113,6 +113,7 @@ bash ios-export/push-pck.sh          # 推 build/StS2.pck 到 App 的 Documents/
 - [`docs/DESIGN.md`](docs/DESIGN.md) — 部署架构 v2（内容拆分 + SideStore 续签）
 - [`docs/RENEWAL.md`](docs/RENEWAL.md) — 永久续签方法（SideStore + LocalDevVPN + iLoader 组合，免每周插 Mac）
 - [`docs/SAVE_SYNC.md`](docs/SAVE_SYNC.md) — 存档首次迁移 + 双端自动同步（含 Windows/Linux 跨平台做法）
+- [`docs/BUILD_WITHOUT_MAC.md`](docs/BUILD_WITHOUT_MAC.md) — 没有 Mac 时用云端 macOS 构建（租云 Mac / GitHub Actions）
 - [`docs/patch-catalog.md`](docs/patch-catalog.md) — 补丁目录（静态织入如何解析目标方法）
 - [`src/STS2MobileIos/manifest.json`](src/STS2MobileIos/manifest.json) — 织入清单（游戏类 → 补丁钩子映射）
 

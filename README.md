@@ -75,7 +75,7 @@ share/                 移植技术记录（PDF / HTML）
 
 | 阶段 | 平台 | 说明 |
 |---|---|---|
-| **构建**（产出瘦身 IPA + 素材包） | **必须 macOS** | Xcode、Godot iOS 导出、NativeAOT 编 ios-arm64、编 FMOD/Spine 的 iOS 库、首次签名——都是 macOS 独占，没有 Windows 路径。没 Mac 可用云端 macOS（GitHub Actions macOS runner / 云 Mac）跑这一次。 |
+| **构建**（产出瘦身 IPA + 素材包） | **必须 macOS** | Xcode、Godot iOS 导出、NativeAOT 编 ios-arm64、编 FMOD/Spine 的 iOS 库、首次签名——都是 macOS 独占，没有 Windows 路径。**没 Mac 见 [`docs/BUILD_WITHOUT_MAC.md`](docs/BUILD_WITHOUT_MAC.md)**（租云 Mac / GitHub Actions 两条路）。 |
 | **安装 + 永久续签** | **跨平台** | [iLoader](https://iloader.site/)（Windows/macOS/Linux）+ SideStore + LocalDevVPN（都在手机上）即可，不需要 Mac。 |
 | **存档迁移 / 同步** | **跨平台** | 本仓库脚本是 macOS（`devicectl`）；Windows/Linux 用 `pymobiledevice3` 或 iMazing/3uTools 把存档放进 App 文档区，见 [`docs/SAVE_SYNC.md`](docs/SAVE_SYNC.md)。 |
 
