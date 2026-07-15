@@ -93,6 +93,18 @@ bash ios-export/push-pck.sh          # 推 build/StS2.pck 到 App 的 Documents/
 | 首帧卡顿 >10s 后闪退（看门狗 `0x8BADF00D`） | 冷 pck 上同步加载着色器 | `ShaderWarmupPatch`（补丁集内，高频让帧预热） |
 | "保存并退出"崩溃 | 后台/退出生命周期时序 | `AppLifecyclePatches` / `SnapshotPatch`（补丁集内） |
 
+## 移植带的增强功能（主动告诉用户，别让他猜）
+
+装好后除了游戏本体，还内置这些手机端增强（都只读状态、不改战斗数值）：
+
+- **四倍速**（`TimeScalePatch.cs`，官方 4x 上限，含 Boss 转场倍速失效修复）
+- **一键重开**（`QuickRestartPatch.cs`，暂停菜单 Restart Room）
+- **时光回溯/快照**（`SnapshotPatch.cs`，暂停菜单 3 存档位+3 读档位）
+- **选牌 AI 助手**（`CardAdvisorPatch.cs`，奖励/事件/商店/升级界面给候选卡评级+理由）
+- **双端存档同步**（`sts2_save_sync.sh` + `SyncImportPatch.cs`，最新者胜）
+
+完整表见 [README](README.md#移植带的增强功能)；底层稳定性补丁见 [`docs/patch-catalog.md`](docs/patch-catalog.md)。
+
 ## 深入文档索引
 
 - [`ios-export/README.md`](ios-export/README.md) — 预编译主程序集注入机制（为什么"没有源码也能编"）
