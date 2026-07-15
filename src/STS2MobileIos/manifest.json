@@ -1,0 +1,263 @@
+{
+  "patches": [
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.NGame",
+      "targetMethod": "InitializePlatform",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.PlatformPatches",
+      "hookMethod": "InitializePlatformPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Debug.OsDebugInfo",
+      "targetMethod": "LogSystemInfo",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.PlatformPatches",
+      "hookMethod": "LogSystemInfoPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Saves.PrefsSave",
+      "targetMethod": "get_UploadData",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.PlatformPatches",
+      "hookMethod": "ReturnFalsePrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Saves.GodotFileIo",
+      "targetMethod": "CreateDirectory",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.PlatformPatches",
+      "hookMethod": "CreateDirectoryPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Debug.SentryService",
+      "targetMethod": "Initialize",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.PlatformPatches",
+      "hookMethod": "SkipPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Saves.SaveManager",
+      "targetMethod": "InitSettingsData",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.SettingsPatches",
+      "hookMethod": "InitSettingsDataPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.Settings.NVSyncPaginator",
+      "targetMethod": "GetVSyncString",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.SettingsPatches",
+      "hookMethod": "GetVSyncStringPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.Settings.NResolutionDropdown",
+      "targetMethod": "RefreshEnabled",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.UiScalePatches",
+      "hookMethod": "RefreshEnabledPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.Settings.NResolutionDropdown",
+      "targetMethod": "PopulateDropdownItems",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.UiScalePatches",
+      "hookMethod": "PopulateScaleItemsPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.Settings.NResolutionDropdown",
+      "targetMethod": "RefreshCurrentlySelectedResolution",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.UiScalePatches",
+      "hookMethod": "RefreshScaleLabelPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.Settings.NResolutionDropdown",
+      "targetMethod": "OnDropdownItemSelected",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.UiScalePatches",
+      "hookMethod": "ScaleItemSelectedPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.Settings.NResolutionDropdownItem",
+      "targetMethod": "Init",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.UiScalePatches",
+      "hookMethod": "ResolutionItemInitPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.Settings.NSettingsScreen",
+      "targetMethod": "LocalizeLabels",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.UiScalePatches",
+      "hookMethod": "LocalizeLabelsPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.CommonUi.NGlobalUi",
+      "targetMethod": "OnWindowChange",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.UiScalePatches",
+      "hookMethod": "GlobalUiWindowChangePrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu",
+      "targetMethod": "OnWindowChange",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.UiScalePatches",
+      "hookMethod": "MainMenuWindowChangePrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu",
+      "targetMethod": "_Ready",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.MobileLayoutPatches",
+      "hookMethod": "MainMenuReadyPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Events.NEventLayout",
+      "targetMethod": "_Ready",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.EventLayoutPatches",
+      "hookMethod": "ReadyPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Events.NEventLayout",
+      "targetMethod": "AddOptions",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.EventLayoutPatches",
+      "hookMethod": "AddOptionsPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.Shops.NMerchantInventory",
+      "targetMethod": "DoOpenAnimation",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.MerchantLayoutPatches",
+      "hookMethod": "MerchantOpenPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NEarlyAccessDisclaimer",
+      "targetMethod": "_Ready",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.EarlyAccessDisclaimerPatches",
+      "hookMethod": "ReadyPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom",
+      "targetMethod": "SetUpBackground",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.CombatBackgroundPatches",
+      "hookMethod": "SetUpBackgroundPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom",
+      "targetMethod": "_Ready",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.CombatBackgroundPatches",
+      "hookMethod": "CombatRoomReadyPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.NRewardsScreen",
+      "targetMethod": "AfterOverlayClosed",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.CardRewardPatches",
+      "hookMethod": "RewardsScreenClosedPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.NBackgroundModeHandler",
+      "targetMethod": "EnterBackgroundMode",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.AppLifecyclePatches",
+      "hookMethod": "EnterBackgroundPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.NBackgroundModeHandler",
+      "targetMethod": "ExitBackgroundMode",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.AppLifecyclePatches",
+      "hookMethod": "ExitBackgroundPrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Combat.NMouseCardPlay",
+      "targetMethod": "_Input",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.TouchInputPatches",
+      "hookMethod": "MouseCardPlayInputPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.NGame",
+      "targetMethod": "_EnterTree",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.ShaderWarmupPatch",
+      "hookMethod": "EnterTreePostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.PauseMenu.NPauseMenu",
+      "targetMethod": "_Ready",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.QuickRestartPatch",
+      "hookMethod": "ReadyPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.NGame",
+      "targetMethod": "_Ready",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.TimeScalePatch",
+      "hookMethod": "ReadyPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Vfx.Utilities.NHitStop",
+      "targetMethod": "SetTimeScale",
+      "kind": "prefix",
+      "hookType": "STS2MobileIos.Patches.TimeScalePatch",
+      "hookMethod": "HitStopSetTimeScalePrefix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Runs.RunManager",
+      "targetMethod": "SetUpNewSingleplayer",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.SnapshotPatch",
+      "hookMethod": "OnNewRun"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardRewardSelectionScreen",
+      "targetMethod": "RefreshOptions",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.CardAdvisorPatch",
+      "hookMethod": "RefreshOptionsPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.Shops.NMerchantInventory",
+      "targetMethod": "Initialize",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.CardAdvisorPatch",
+      "hookMethod": "MerchantInitPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NChooseACardSelectionScreen",
+      "targetMethod": "_Ready",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.CardAdvisorPatch",
+      "hookMethod": "ChooseACardPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NChooseABundleSelectionScreen",
+      "targetMethod": "_Ready",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.CardAdvisorPatch",
+      "hookMethod": "ChooseABundlePostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen",
+      "targetMethod": "_Ready",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.CardAdvisorPatch",
+      "hookMethod": "GridSelectPostfix"
+    },
+    {
+      "targetType": "MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack",
+      "targetMethod": "Push",
+      "kind": "postfix",
+      "hookType": "STS2MobileIos.Patches.CardAdvisorPatch",
+      "hookMethod": "OverlayPushPostfix"
+    }
+  ]
+}

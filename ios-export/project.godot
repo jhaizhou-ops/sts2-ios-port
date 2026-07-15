@@ -1,0 +1,27 @@
+; STS2 iOS 导出驱动壳工程
+; 真正的游戏内容来自游戏自己的 pck（导出时作为主内容包）。本文件只需与游戏关键设置对齐，
+; 尤其 dotnet/project/assembly_name=sts2（Godot iOS 导出的硬耦合）。
+
+config_version=5
+
+[application]
+
+config/name="Slay the Spire 2"
+run/main_scene="res://scenes/game.tscn"
+config/features=PackedStringArray("4.5", "C#", "Forward Plus")
+config/icon="res://icon.png"
+
+[dotnet]
+
+project/assembly_name="sts2"
+
+[debug]
+
+file_logging/enable_file_logging=true
+file_logging/enable_file_logging.pc=true
+settings/stdout/verbose_stdout=true
+
+[rendering]
+
+renderer/rendering_method="forward_plus"
+textures/vram_compression/import_etc2_astc=true

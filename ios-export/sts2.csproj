@@ -1,0 +1,58 @@
+<Project Sdk="Godot.NET.Sdk/4.5.1">
+
+  <!--
+    预编译主程序集注入工程。
+    我们没有游戏源码，只有织入好的 sts2.dll。此 csproj 不编译任何源码，而是在 NativeAOT
+    编译器(ILC)读取托管程序集之前，用织入好的 sts2.dll 覆盖 csc 产出的空占位程序集。
+    详见 README.md「核心机制」。
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AssemblyName>sts2</AssemblyName>
+    <RootNamespace>MegaCrit.Sts2</RootNamespace>
+    <Nullable>disable</Nullable>
+    <!-- 恢复反射式 System.Text.Json：游戏 AtlasManager 等用 JsonSerializer.Deserialize<T>(string)
+         无 source-gen context，AOT 默认禁用反射式序列化会抛 InvalidOperationException。
+         桌面 CoreCLR 默认开反射式；整个 sts2 已 TrimmerRootAssembly root(元数据保留)，
+         开此开关安全，是对齐桌面行为而非 hack。 -->
+    <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
+    <!-- 反射保护：游戏的 1624 个反射注册类型全在 sts2.dll 内，Godot 官方 targets 已
+         TrimmerRootAssembly=$(TargetName) 完整保护主程序集。不要保护全部依赖 —
+         那会强制加载 Steamworks.NET 里 Windows 专用的显式内存布局类型, ILC 直接拒载。 -->
+    <!-- 织入 dll 与依赖由 build-ios.sh 刷新到 prebuilt/ -->
+    <WovenAssembly>$(MSBuildProjectDirectory)/prebuilt/sts2.dll</WovenAssembly>
+    <PrebuiltDir>$(MSBuildProjectDirectory)/prebuilt</PrebuiltDir>
+  </PropertyGroup>
+
+  <!-- 所有游戏依赖程序集作为引用，供 ILC 解析织入 sts2.dll 的引用 -->
+  <ItemGroup>
+    <Reference Include="$(PrebuiltDir)/deps/*.dll">
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- 补丁库需 root(被织入调用点引用+含反射逻辑); sts2 由 Godot targets root -->
+  <ItemGroup>
+    <TrimmerRootAssembly Include="STS2MobileIos" />
+  </ItemGroup>
+
+  <!--
+    关键注入点：csc(CoreCompile) 之后、ILC(IlcCompile) 之前，
+    用织入 sts2.dll 覆盖中间产物。ILC 的托管输入是 $(IntermediateOutputPath)$(TargetName).dll，
+    覆盖它 = ILC 编译我们的织入版而非空占位版。
+  -->
+  <Target Name="InjectWovenAssembly" AfterTargets="CoreCompile" BeforeTargets="IlcCompile">
+    <Error Condition="!Exists('$(WovenAssembly)')"
+           Text="织入程序集缺失: $(WovenAssembly) — 先跑 build-ios.sh 刷新" />
+    <Message Importance="high" Text="[注入] 用织入 sts2.dll 覆盖 $(IntermediateOutputPath)sts2.dll" />
+    <Copy SourceFiles="$(WovenAssembly)"
+          DestinationFiles="$(IntermediateOutputPath)sts2.dll"
+          OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="$(WovenAssembly)"
+          DestinationFiles="$(TargetPath)"
+          OverwriteReadOnlyFiles="true" />
+  </Target>
+
+</Project>

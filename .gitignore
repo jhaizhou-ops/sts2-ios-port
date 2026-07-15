@@ -1,0 +1,38 @@
+# --- 版权红线：游戏本体 / 资产 / 反编译，永不入库 ---
+*.dll
+*.pck
+*.ipa
+sts2*.dll
+sts2*.decompiled.*
+game-refs/
+extracted/
+
+# --- 第三方专有库（各自去官网下载）---
+fmod-ios/
+fmod-libs/
+fmod-gdextension/
+ios-libs/
+spine-runtimes/
+ios-export/addons/
+ios-export/prebuilt/
+
+# --- 构建产物 / 缓存 ---
+bin/
+obj/
+.godot/
+ios-export/build/
+*.framework
+*.xcframework
+*.a
+*.dylib
+*.so
+
+# --- 本地配置（含你的签名身份，绝不提交）---
+ios-export/config.sh
+ios-export/.work/
+
+# --- 本地/临时 ---
+.DS_Store
+*.log
+*.pid
+save_backups/

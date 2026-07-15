@@ -1,0 +1,98 @@
+# AGENTS.md — 给 AI Agent 的一站式移植指令
+
+> 你（AI Agent）正在帮助一位**已在 Steam 拥有《杀戮尖塔2》**的用户，把游戏移植到**他自己的 iPhone** 上原生运行（非串流、非模拟器）。全程使用**他自己的游戏文件和开发者账号**；本仓库只提供工具链和方法，不含游戏本体。
+>
+> 按本文件从上到下执行。每一步都 **verify 后再进下一步**，缺失即停下告诉用户要装什么，别猜着糊过去。
+
+## 铁律（违反会毁数据 / 侵权，先读）
+
+1. **只用用户自己拥有的正版游戏文件**。不下载、不分发游戏二进制/pck/资产。用户没在 Steam 装游戏就停下让他先装。
+2. **装机必须覆盖安装，绝不 `uninstall`**——uninstall 会清空 App 的存档容器。增量更新用 `deploy-slim.sh`（覆盖装）。
+3. **不把用户的签名身份写进任何会提交的文件**。所有个人值只进 `ios-export/config.sh`（已被 .gitignore 忽略）。
+
+## 前置环境（逐项 verify，缺失即停）
+
+| 依赖 | 检查 | 缺失怎么办 |
+|---|---|---|
+| macOS + Xcode | `xcodebuild -version` | App Store 装 Xcode（免费 Apple ID 即可签名） |
+| .NET 9 SDK | `~/.dotnet/dotnet --version`（9.0.x） | 装到 `~/.dotnet` |
+| Godot 4.5.1 **mono** | 可执行文件存在 | 官网下 4.5.1 mono 版 |
+| Godot iOS 导出模板 | `~/Library/Application Support/Godot/export_templates/4.5.1.stable.mono` | Godot 里 import `templates.tpz` |
+| 正版游戏 | `.../Slay the Spire 2/SlayTheSpire2.app/.../data_sts2_macos_arm64/sts2.dll` 存在 | 让用户在 Steam 安装 |
+| Spine iOS 库 | `libspine_godot.ios.template_release.framework` | 用户按 Spine 授权自行获取 |
+| FMOD iOS 库 | `libGodotFmod.ios.template_release.xcframework` + `libfmod{,studio}_iphoneos.a` | 用户去 FMOD 官网按其授权下载 |
+
+> ⚠️ 第三方库（Spine/FMOD）有各自的商业授权，本仓库**不转发**。让用户自行下载后，把目录填进 `config.sh`。
+
+## 第 0 步 · 填配置
+
+```bash
+cp ios-export/config.example.sh ios-export/config.sh
+```
+
+编辑 `ios-export/config.sh`，填入用户自己的值（模板里每项都有注释）。取值命令：
+
+```bash
+security find-identity -v -p codesigning   # → STS2_SIGN_IDENTITY 和 STS2_TEAM_ID(括号里的10位)
+xcrun devicectl list devices               # → STS2_DEVICE_UDID(连上 iPhone 后)
+```
+
+`STS2_BUNDLE_ID` 让用户自定（建议其反向域名）。路径项一般默认即可，除非游戏/库不在默认位置。
+
+## 第 1 步 · 一键构建（命令行六步）
+
+```bash
+bash ios-export/build-ios.sh
+```
+
+它顺序做：**①织入**（把移植补丁静态织进用户的 `sts2.dll`）→ **②组装托管依赖** → **③放 GDExtension iOS 库** → **④NativeAOT** 把织入后的程序集预编译成 `sts2.dylib` → **⑤Godot 导出 Xcode 工程** → **⑤.5 pck 三连处理**（移 sentry + 补脚本占位）+ 写内存 entitlement。每步缺失会响亮报错并指向日志（`ios-export/.work/*.log`）。
+
+产物：`ios-export/build/StS2.xcodeproj`、`build/StS2.pck`、`.godot/.../publish/sts2.dylib`、`.work/ent_mem.plist`。
+
+原理见 [`ios-export/README.md`](ios-export/README.md)（预编译主程序集注入）和 [`docs/design-ios-dotnet-export.md`](docs/design-ios-dotnet-export.md)（AOT 导出契约，行号级）。
+
+## 第 2 步 · 签名装机（首次必须 Xcode GUI）
+
+免费账号命令行签不了（`No Accounts` / `ApplicationVerificationFailed`），首次必须走 Xcode GUI：
+
+1. Xcode 打开 `ios-export/build/StS2.xcodeproj`
+2. 选 `StS2` target → **Signing & Capabilities**：
+   - Team 选用户的账号，勾 **Automatically manage signing**
+   - 点 **+ Capability** → 加 **Increased Memory**（**治本项**：不加会因内存超限被系统 jetsam 杀）
+3. 顶部选用户的 iPhone → 点 ▶ **Run**（编译 + 签名 + 装机一步到位）
+
+## 第 3 步 · 游戏内容包上机（内容拆分架构）
+
+签名包**不含** 1.77G 的 pck（否则 SideStore 装/续签时整包读进内存必被杀）。把内容包一次性 USB 推到手机文档区：
+
+- 目标：手机 App 容器的 `Documents/StS2.pck`
+- 引擎经 `Info.plist` 的 `godot_cmdline = ["--main-pack","user://StS2.pck"]` 从文档区加载
+- 同 bundle id 覆盖重装/续签**不会清** Documents，故 pck 推一次长驻
+
+细节见 [`docs/DESIGN.md`](docs/DESIGN.md) 「部署架构 v2」。
+
+到这里游戏应能在 iPhone 上进主菜单、开局、正常对战。
+
+## 日常维护
+
+| 场景 | 做法 |
+|---|---|
+| 只改了补丁、游戏内容没动 | `bash ios-export/deploy-slim.sh`（换 dylib 重签，覆盖装，保留 pck+存档） |
+| 免插 Mac 每周续签 | SideStore 0.6.3 自助续签（见 DESIGN.md 部署架构 v2） |
+| 电脑↔手机存档同步 | `ios-export/sts2_save_sync.sh`（最新者胜；可挂 launchd 每 5 分钟） |
+
+## 三大移植难题（已根治；遇到对应症状按此定位）
+
+| 症状 | 根因 | 已有补丁 / 措施 |
+|---|---|---|
+| 启动或对战中被系统杀 | iOS 单 App 内存上限 | `increased-memory-limit` entitlement（第 2 步的 capability） |
+| 首帧卡顿 >10s 后闪退（看门狗 `0x8BADF00D`） | 冷 pck 上同步加载着色器 | `ShaderWarmupPatch`（补丁集内，高频让帧预热） |
+| "保存并退出"崩溃 | 后台/退出生命周期时序 | `AppLifecyclePatches` / `SnapshotPatch`（补丁集内） |
+
+## 深入文档索引
+
+- [`ios-export/README.md`](ios-export/README.md) — 预编译主程序集注入机制（为什么"没有源码也能编"）
+- [`docs/design-ios-dotnet-export.md`](docs/design-ios-dotnet-export.md) — NativeAOT iOS 导出契约（行号级出处）
+- [`docs/DESIGN.md`](docs/DESIGN.md) — 部署架构 v2（内容拆分 + SideStore 续签）
+- [`docs/patch-catalog.md`](docs/patch-catalog.md) — 补丁目录（静态织入如何解析目标方法）
+- [`src/STS2MobileIos/manifest.json`](src/STS2MobileIos/manifest.json) — 织入清单（游戏类 → 补丁钩子映射）
