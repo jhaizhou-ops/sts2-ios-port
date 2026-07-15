@@ -61,15 +61,19 @@ bash ios-export/build-ios.sh
    - 点 **+ Capability** → 加 **Increased Memory**（**治本项**：不加会因内存超限被系统 jetsam 杀）
 3. 顶部选用户的 iPhone → 点 ▶ **Run**（编译 + 签名 + 装机一步到位）
 
-## 第 3 步 · 游戏内容包上机（内容拆分架构）
+## 第 3 步 · 游戏内容包上机（内容拆分架构，续签的地基）
 
-签名包**不含** 1.77G 的 pck（否则 SideStore 装/续签时整包读进内存必被杀）。把内容包一次性 USB 推到手机文档区：
+签名包**不含** 1.77G 的 pck（否则 SideStore 装/续签时整包读进内存必被杀）。把内容包**一次性**推到手机文档区：
 
-- 目标：手机 App 容器的 `Documents/StS2.pck`
-- 引擎经 `Info.plist` 的 `godot_cmdline = ["--main-pack","user://StS2.pck"]` 从文档区加载
-- 同 bundle id 覆盖重装/续签**不会清** Documents，故 pck 推一次长驻
+```bash
+bash ios-export/push-pck.sh          # 推 build/StS2.pck 到 App 的 Documents/StS2.pck，带落地校验
+```
 
-细节见 [`docs/DESIGN.md`](docs/DESIGN.md) 「部署架构 v2」。
+- 前置：手机上**先装好瘦身 App**（第 2 步），容器才存在
+- `config.sh` 的 `STS2_BUNDLE_ID_SIGNED` 必须是**手机上已装 App 的实际 bundle**（SideStore 签名会带团队后缀），否则推错容器
+- 引擎经 `Info.plist` 的 `godot_cmdline = ["--main-pack","user://StS2.pck"]` 从文档区加载；同 bundle 覆盖重装/续签**不清** Documents，故推一次长驻
+
+**内容拆分（55M 瘦身包 + 1.77G 素材包）是永久续签能成立的前提**，完整机制（怎么拆、怎么推、所有坑）见 [`docs/RENEWAL.md`](docs/RENEWAL.md)；架构全景见 [`docs/DESIGN.md`](docs/DESIGN.md)。
 
 到这里游戏应能在 iPhone 上进主菜单、开局、正常对战。
 

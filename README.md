@@ -36,7 +36,7 @@ src/STS2MobileIos/     iOS 移植补丁工程
   └─ PatchHelper.cs    反射/日志辅助
 ios-export/            iOS 构建工程（build-ios.sh 六步链、NativeAOT 导出契约）
   ├─ config.example.sh 本地配置模板（复制成 config.sh 填你自己的签名身份）
-  └─ build/deploy/sync 一键构建 / 增量装机 / 存档同步脚本
+  └─ build/push-pck/deploy/sync 一键构建 / 素材包上机 / 增量装机 / 存档同步脚本
 tools/                 pck 处理脚本（操作你自己的合法游戏文件）
 docs/                  移植技术文档（部署架构、.NET AOT 导出契约、补丁目录）
 share/                 移植技术记录（PDF / HTML）
