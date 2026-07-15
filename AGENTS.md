@@ -78,7 +78,7 @@ bash ios-export/build-ios.sh
 | 场景 | 做法 |
 |---|---|
 | 只改了补丁、游戏内容没动 | `bash ios-export/deploy-slim.sh`（换 dylib 重签，覆盖装，保留 pck+存档） |
-| 免插 Mac 每周续签 | SideStore 0.6.3 自助续签（见 DESIGN.md 部署架构 v2） |
+| 免插 Mac 永久续签 | SideStore + LocalDevVPN + iLoader 组合，手机后台自动重签（完整方法见 [`docs/RENEWAL.md`](docs/RENEWAL.md)） |
 | 电脑↔手机存档同步 | `ios-export/sts2_save_sync.sh`（最新者胜；可挂 launchd 每 5 分钟） |
 
 ## 三大移植难题（已根治；遇到对应症状按此定位）
@@ -94,5 +94,6 @@ bash ios-export/build-ios.sh
 - [`ios-export/README.md`](ios-export/README.md) — 预编译主程序集注入机制（为什么"没有源码也能编"）
 - [`docs/design-ios-dotnet-export.md`](docs/design-ios-dotnet-export.md) — NativeAOT iOS 导出契约（行号级出处）
 - [`docs/DESIGN.md`](docs/DESIGN.md) — 部署架构 v2（内容拆分 + SideStore 续签）
+- [`docs/RENEWAL.md`](docs/RENEWAL.md) — 永久续签方法（SideStore + LocalDevVPN + iLoader 组合，免每周插 Mac）
 - [`docs/patch-catalog.md`](docs/patch-catalog.md) — 补丁目录（静态织入如何解析目标方法）
 - [`src/STS2MobileIos/manifest.json`](src/STS2MobileIos/manifest.json) — 织入清单（游戏类 → 补丁钩子映射）
