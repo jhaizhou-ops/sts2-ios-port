@@ -54,7 +54,7 @@ src/STS2MobileIos/     iOS 移植补丁工程
   └─ PatchHelper.cs    反射/日志辅助
 ios-export/            iOS 构建工程（build-ios.sh 六步链、NativeAOT 导出契约）
   ├─ config.example.sh 本地配置模板（复制成 config.sh 填你自己的签名身份）
-  └─ build/push-pck/deploy/sync 一键构建 / 素材包上机 / 增量装机 / 存档同步脚本
+  └─ build/push-pck/deploy/push-save/sync 构建 / 素材包上机 / 增量装机 / 存档迁移 / 双端同步脚本
 tools/                 pck 处理脚本（操作你自己的合法游戏文件）
 docs/                  移植技术文档（部署架构、.NET AOT 导出契约、补丁目录）
 share/                 移植技术记录（PDF / HTML）
@@ -68,6 +68,18 @@ share/                 移植技术记录（PDF / HTML）
 - FMOD iOS SDK、Spine 运行时 iOS 库——官方地址与确切版本（FMOD 2.03 / Spine 4.2）见 [`docs/THIRD_PARTY_LIBS.md`](docs/THIRD_PARTY_LIBS.md)（本仓库不转发二进制）
 
 构建流程见 [`ios-export/README.md`](ios-export/README.md)。
+
+## 平台支持（Windows 能用吗？）
+
+分两段看——依赖的续签工具确实跨平台，但**构建**那一段绕不开 Mac：
+
+| 阶段 | 平台 | 说明 |
+|---|---|---|
+| **构建**（产出瘦身 IPA + 素材包） | **必须 macOS** | Xcode、Godot iOS 导出、NativeAOT 编 ios-arm64、编 FMOD/Spine 的 iOS 库、首次签名——都是 macOS 独占，没有 Windows 路径。没 Mac 可用云端 macOS（GitHub Actions macOS runner / 云 Mac）跑这一次。 |
+| **安装 + 永久续签** | **跨平台** | [iLoader](https://iloader.site/)（Windows/macOS/Linux）+ SideStore + LocalDevVPN（都在手机上）即可，不需要 Mac。 |
+| **存档迁移 / 同步** | **跨平台** | 本仓库脚本是 macOS（`devicectl`）；Windows/Linux 用 `pymobiledevice3` 或 iMazing/3uTools 把存档放进 App 文档区，见 [`docs/SAVE_SYNC.md`](docs/SAVE_SYNC.md)。 |
+
+一句话：**构建需要 Mac 一次**；之后的安装、续签、存档，Windows 用户都能自理。
 
 ## 许可
 

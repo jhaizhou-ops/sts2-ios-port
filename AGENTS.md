@@ -83,7 +83,8 @@ bash ios-export/push-pck.sh          # 推 build/StS2.pck 到 App 的 Documents/
 |---|---|
 | 只改了补丁、游戏内容没动 | `bash ios-export/deploy-slim.sh`（换 dylib 重签，覆盖装，保留 pck+存档） |
 | 免插 Mac 永久续签 | SideStore + LocalDevVPN + iLoader 组合，手机后台自动重签（完整方法见 [`docs/RENEWAL.md`](docs/RENEWAL.md)） |
-| 电脑↔手机存档同步 | `ios-export/sts2_save_sync.sh`（最新者胜；可挂 launchd 每 5 分钟） |
+| **首次把电脑进度迁到手机** | `bash ios-export/push-save.sh` 再启动游戏（手机没存档时也能导入；详见 [`docs/SAVE_SYNC.md`](docs/SAVE_SYNC.md)） |
+| 之后电脑↔手机自动同步 | `ios-export/sts2_save_sync.sh`（最新者胜；可挂 launchd 每 5 分钟） |
 
 ## 三大移植难题（已根治；遇到对应症状按此定位）
 
@@ -111,6 +112,7 @@ bash ios-export/push-pck.sh          # 推 build/StS2.pck 到 App 的 Documents/
 - [`docs/design-ios-dotnet-export.md`](docs/design-ios-dotnet-export.md) — NativeAOT iOS 导出契约（行号级出处）
 - [`docs/DESIGN.md`](docs/DESIGN.md) — 部署架构 v2（内容拆分 + SideStore 续签）
 - [`docs/RENEWAL.md`](docs/RENEWAL.md) — 永久续签方法（SideStore + LocalDevVPN + iLoader 组合，免每周插 Mac）
+- [`docs/SAVE_SYNC.md`](docs/SAVE_SYNC.md) — 存档首次迁移 + 双端自动同步（含 Windows/Linux 跨平台做法）
 - [`docs/patch-catalog.md`](docs/patch-catalog.md) — 补丁目录（静态织入如何解析目标方法）
 - [`src/STS2MobileIos/manifest.json`](src/STS2MobileIos/manifest.json) — 织入清单（游戏类 → 补丁钩子映射）
 

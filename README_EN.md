@@ -54,7 +54,7 @@ src/STS2MobileIos/     iOS porting patch project
   └─ PatchHelper.cs    Reflection / logging helpers
 ios-export/            iOS build project (build-ios.sh 6-step chain, NativeAOT export contract)
   ├─ config.example.sh Local config template (copy to config.sh, fill in your own signing identity)
-  └─ build/push-pck/deploy/sync  build / upload asset pack / incremental install / save-sync scripts
+  └─ build/push-pck/deploy/push-save/sync  build / upload asset pack / incremental install / save migration / two-way sync
 tools/                 pck-processing scripts (operate on your own legal game files)
 docs/                  Porting technical docs (deployment architecture, .NET AOT export contract, patch catalog)
 share/                 Porting technical record (PDF / HTML)
@@ -68,6 +68,18 @@ share/                 Porting technical record (PDF / HTML)
 - FMOD iOS SDK and Spine runtime iOS libs — official sources and exact versions (FMOD 2.03 / Spine 4.2) are in [`docs/THIRD_PARTY_LIBS.md`](docs/THIRD_PARTY_LIBS.md) (this repo does not redistribute binaries)
 
 Build flow: see [`ios-export/README.md`](ios-export/README.md).
+
+## Platform support (does Windows work?)
+
+Two parts — the renewal tools are genuinely cross-platform, but **building** unavoidably needs a Mac:
+
+| Stage | Platform | Notes |
+|---|---|---|
+| **Build** (produce slim IPA + asset pack) | **macOS required** | Xcode, Godot iOS export, NativeAOT for ios-arm64, building the FMOD/Spine iOS libs, and the first signing are all macOS-only — there is no Windows path. No Mac? Use cloud macOS (GitHub Actions macOS runner / a cloud Mac) for this one step. |
+| **Install + permanent renewal** | **cross-platform** | [iLoader](https://iloader.site/) (Windows/macOS/Linux) + SideStore + LocalDevVPN (both on-device) — no Mac needed. |
+| **Save migration / sync** | **cross-platform** | This repo's scripts are macOS (`devicectl`); on Windows/Linux use `pymobiledevice3` or iMazing/3uTools to place saves into the app's Documents — see [`docs/SAVE_SYNC.md`](docs/SAVE_SYNC.md). |
+
+In one line: **you need a Mac once to build**; after that, install, renewal, and saves can all be handled from Windows.
 
 ## Keeping it signed forever (no weekly Mac tether)
 
